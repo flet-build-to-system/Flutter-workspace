@@ -12,17 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4  # تنزيل الكود من المستودع
 
-      # إعداد Dart SDK باستخدام الإجراء الرسمي
-      - uses: dart-lang/setup-dart@v1.7.1
+      # إعداد Flutter SDK (يحتوي على Dart تلقائيًا)
+      - uses: subosito/flutter-action@v2
         with:
-          sdk: dev
+          flutter-version: 'stable' # اختر الإصدار المناسب (stable, beta, dev)
 
-      # إعداد Node.js (اختياري إذا كان ضرورياً لـ npm)
+      # إعداد Node.js (إذا كان ضروريًا لـ npm)
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      - run: dart pub get  # تثبيت зависимости Dart
-      - run: dart analyze --fatal-infos  # تحليل الكود
-      - run: dart tool/sig.dart --verify  # أمر مخصص (يجب التأكد من وجوده)
+      - run: flutter pub get  # تثبيت التبعيات باستخدام Flutter
+      - run: flutter analyze --fatal-infos  # تحليل الكود
+      - run: dart tool/sig.dart --verify  # إذا كان هذا الأمر لا يتطلب Flutter
       - run: npm run build  # بناء المشروع (إذا كان يستخدم Node.js)
