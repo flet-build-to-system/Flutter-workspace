@@ -1,4 +1,4 @@
-name: setup_dart
+name: calcula
 description: The setup-dart GitHub Action - download and setup the Dart SDK.
 
 publish_to: none
