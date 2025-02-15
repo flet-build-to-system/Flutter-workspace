@@ -1,22 +1,29 @@
-# Validate that the compiled artifacts are up-to-date.
-
 name: Build
 
 on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 0 * * 0" # Run every Sunday at 00:00.
+    - cron: "0 0 * * 0" # يعمل كل أحد عند الساعة 00:00.
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./
+      - uses: actions/checkout@v4  # تنزيل الكود من المستودع
+
+      # إعداد Flutter SDK (إصدار أحدث)
+      - uses: subosito/flutter-action@v2
         with:
-          sdk: dev
-      - run: dart pub get
-      - run: dart analyze --fatal-infos
-      - run: dart tool/sig.dart --verify
-      - run: npm run build
+          channel: stable
+          flutter-version: '3.22.0'  # إصدار Flutter يحتوي على Dart SDK 3.4.0
+
+      # إعداد Node.js (إذا كان ضروريًا لـ npm)
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - run: flutter pub get  # تثبيت التبعيات باستخدام Flutter
+      - run: flutter analyze --fatal-infos  # تحليل الكود
+      - run: dart tool/sig.dart --verify  # إذا كان هذا الأمر لا يتطلب Flutter
+      - run: npm run build  # بناء المشروع (إذا كان يستخدم Node.js)
