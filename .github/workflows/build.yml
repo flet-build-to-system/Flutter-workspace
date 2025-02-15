@@ -1,22 +1,28 @@
-# Validate that the compiled artifacts are up-to-date.
-
 name: Build
 
 on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 0 * * 0" # Run every Sunday at 00:00.
+    - cron: "0 0 * * 0" # يعمل كل أحد عند الساعة 00:00.
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./
+      - uses: actions/checkout@v4  # تنزيل الكود من المستودع
+
+      # إعداد Dart SDK باستخدام الإجراء الرسمي
+      - uses: dart-lang/setup-dart@v2
         with:
           sdk: dev
-      - run: dart pub get
-      - run: dart analyze --fatal-infos
-      - run: dart tool/sig.dart --verify
-      - run: npm run build
+
+      # إعداد Node.js (اختياري إذا كان ضرورياً لـ npm)
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - run: dart pub get  # تثبيت зависимости Dart
+      - run: dart analyze --fatal-infos  # تحليل الكود
+      - run: dart tool/sig.dart --verify  # أمر مخصص (يجب التأكد من وجوده)
+      - run: npm run build  # بناء المشروع (إذا كان يستخدم Node.js)
