@@ -12,17 +12,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4  # تنزيل الكود من المستودع
 
-      # إعداد Flutter SDK
+      # إعداد Flutter SDK (إصدار أحدث)
       - uses: subosito/flutter-action@v2
         with:
-          channel: stable  # استخدام قناة stable
-          flutter-version: '3.19.0'  # تحديد إصدار Flutter (اختياري)
-          architecture: X64  # تحديد بنية النظام (X64 أو arm64)
+          channel: stable
+          flutter-version: '3.22.0'  # إصدار Flutter يحتوي على Dart SDK 3.4.0
 
       # إعداد Node.js (إذا كان ضروريًا لـ npm)
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'  # تحديد إصدار Node.js
+          node-version: '18'
 
       - run: flutter pub get  # تثبيت التبعيات باستخدام Flutter
       - run: flutter analyze --fatal-infos  # تحليل الكود
