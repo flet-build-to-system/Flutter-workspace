@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4  # تنزيل الكود من المستودع
 
       # إعداد Dart SDK باستخدام الإجراء الرسمي
-      - uses: dart-lang/setup-dart@v2
+      - uses: dart-lang/setup-dart@v1.7.1
         with:
           sdk: dev
 
